@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuti y Diego Repuestos</title>
+    <style>
+        /* Estilos CSS (sin cambios, el diseño base es excelente) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: #4169E1;
+            /* Azul Rey */
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-header {
+            background-color: white;
+            color: #4169E1;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-header:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #btn-ver-carrito {
+            position: relative;
+        }
+
+        /* Contenedor Principal */
+        main {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        #contenedor-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .producto-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .producto-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .producto-info {
+            padding: 1.5rem;
+        }
+
+        .producto-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.7rem;
+            color: #2c3e50;
+        }
+
+        .producto-card p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .precio {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4169E1;
+            margin-bottom: 1rem;
+        }
+
+        .btn-comprar {
+            width: 100%;
+            background-color: #4169E1;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-comprar:hover {
+            background-color: #2e4db8;
+        }
+
+        /* Modales - Estilo Base */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-contenido {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-header h2 {
+            color: #4169E1;
+            font-size: 1.8rem;
+        }
+
+        .btn-cerrar {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .btn-cerrar:hover {
+            color: #333;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+
+        /* Modal Carrito */
+        #lista-carrito {
+            margin-bottom: 2rem;
+            min-height: 100px;
+        }
+
+        .carrito-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+
+        .carrito-item-info {
+            flex: 1;
+        }
+
+        .carrito-item h4 {
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+        }
+
+        .carrito-item-precio {
+            color: #4169E1;
+            font-weight: bold;
+        }
+
+        .btn-eliminar {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #c0392b;
+        }
+
+        #carrito-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4169E1;
+            text-align: right;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f0f8ff;
+            border-radius: 8px;
+        }
+
+        .carrito-vacio {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+
+        /* Botones de Acción */
+        .btn-primario {
+            width: 100%;
+            background-color: #4169E1;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-primario:hover {
+            background-color: #2e4db8;
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4169E1;
+        }
+
+        /* Panel Admin */
+        #panel-admin .modal-contenido {
+            max-width: 900px;
+        }
+
+        .admin-section {
+            margin-bottom: 3rem;
+        }
+
+        .admin-section h3 {
+            color: #4169E1;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        #lista-gestion-productos {
+            margin-top: 2rem;
+        }
+
+        .producto-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .producto-admin-info {
+            flex: 1;
+        }
+
+        .producto-admin-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-editar,
+        .btn-eliminar-admin {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-editar {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-editar:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-eliminar-admin {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-eliminar-admin:hover {
+            background-color: #c0392b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            #contenedor-productos {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .modal-contenido {
+                padding: 1.5rem;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Cuti y Diego Repuestos</h1>
+            <div class="header-buttons">
+                <button id="btn-ver-carrito" class="btn-header">🛒 Carrito (0)</button>
+                <button id="btn-admin-login" class="btn-header">👤 Admin</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="contenedor-productos">
+            <p>Cargando productos...</p>
+        </div>
+    </main>
+
+    <div id="modal-carrito" class="modal oculto">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2>Tu Carrito</h2>
+                <button id="btn-cerrar-carrito" class="btn-cerrar">&times;</button>
+            </div>
+            <div id="lista-carrito">
+                <p class="carrito-vacio">Tu carrito está vacío</p>
+            </div>
+            <div id="carrito-total">Total: $0</div>
+            <button id="btn-proceder-pago" class="btn-primario">Proceder al Pago</button>
+        </div>
+    </div>
+
+    <div id="modal-checkout" class="modal oculto">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2>Finalizar Compra</h2>
+                <button id="btn-cerrar-checkout" class="btn-cerrar">&times;</button>
+            </div>
+            <form id="formulario-checkout">
+                <div class="form-group">
+                    <label for="checkout-nombre">Nombre Completo</label>
+                    <input type="text" id="checkout-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-direccion">Dirección de Entrega</label>
+                    <input type="text" id="checkout-direccion" required>
+                </div>
+                <div class="form-group">
+                    <label for="checkout-contacto">Número de Contacto</label>
+                    <input type="tel" id="checkout-contacto" required>
+                </div>
+                <button type="submit" class="btn-primario">Finalizar Compra con Codapay</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-admin-login" class="modal oculto">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2>Acceso Administrativo</h2>
+                <button id="btn-cerrar-admin-login" class="btn-cerrar">&times;</button>
+            </div>
+            <form id="formulario-admin-login">
+                <div class="form-group">
+                    <label for="admin-password">Contraseña de Administrador</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="btn-primario">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="panel-admin" class="modal oculto">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h2>Panel de Administración</h2>
+                <button id="btn-cerrar-panel-admin" class="btn-cerrar">&times;</button>
+            </div>
+
+            <div class="admin-section">
+                <h3>Agregar/Editar Producto</h3>
+                <form id="formulario-producto">
+                    <input type="hidden" id="producto-id">
+                    <div class="form-group">
+                        <label for="producto-titulo">Título del Producto</label>
+                        <input type="text" id="producto-titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="producto-descripcion">Descripción</label>
+                        <textarea id="producto-descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="producto-precio">Precio</label>
+                        <input type="number" id="producto-precio" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="producto-imagen">Imagen del Producto</label>
+                        <input type="file" id="producto-imagen" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn-primario" id="btn-guardar-producto">Guardar Producto</button>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h3>Gestionar Productos</h3>
+                <div id="lista-gestion-productos">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        // ============================================
+        // 🔑 CONFIGURACIÓN DE SUPABASE (¡IMPORTANTE!)
+        // ============================================
+        // *** REEMPLAZA ESTOS VALORES CON LOS DE TU PROYECTO DE SUPABASE ***
+        const SUPABASE_URL = 'TU_URL_DE_PROYECTO_SUPABASE'; // Ejemplo: 'https://xyz123.supabase.co'
+        const SUPABASE_ANON_KEY = 'TU_ANON_KEY_PUBLICA'; // Ejemplo: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+
+        // Contraseña segura de admin (debes obtener el HASH de tu contraseña real)
+        // Por seguridad, este HASH debe estar en la tabla 'admin' de Supabase y NO aquí.
+        // Pero para el frontend demo, usaremos esta variable como HASH objetivo.
+        const ADMIN_PASSWORD_HASH_TARGET = 'AQUÍ_VA_EL_HASH_DE_TU_CONTRASEÑA'; // Ejemplo: 'e284a7d45f212...'
+
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================
+        // REFERENCIAS A ELEMENTOS DEL DOM (sin cambios, ¡perfectas!)
+        // ============================================
+
+        // Header
+        const btnVerCarrito = document.getElementById('btn-ver-carrito');
+        const btnAdminLogin = document.getElementById('btn-admin-login');
+
+        // Modales
+        const modalCarrito = document.getElementById('modal-carrito');
+        const modalCheckout = document.getElementById('modal-checkout');
+        const modalAdminLogin = document.getElementById('modal-admin-login');
+        const panelAdmin = document.getElementById('panel-admin');
+
+        // Botones de cerrar
+        const btnCerrarCarrito = document.getElementById('btn-cerrar-carrito');
+        const btnCerrarCheckout = document.getElementById('btn-cerrar-checkout');
+        const btnCerrarAdminLogin = document.getElementById('btn-cerrar-admin-login');
+        const btnCerrarPanelAdmin = document.getElementById('btn-cerrar-panel-admin');
+
+        // Contenedores
+        const contenedorProductos = document.getElementById('contenedor-productos');
+        const listaCarrito = document.getElementById('lista-carrito');
+        const carritoTotal = document.getElementById('carrito-total');
+        const listaGestionProductos = document.getElementById('lista-gestion-productos');
+
+        // Botones de acción
+        const btnProcederPago = document.getElementById('btn-proceder-pago');
+
+        // Formularios
+        const formularioCheckout = document.getElementById('formulario-checkout');
+        const formularioAdminLogin = document.getElementById('formulario-admin-login');
+        const formularioProducto = document.getElementById('formulario-producto');
+
+        // Inputs de formularios
+        const inputAdminPassword = document.getElementById('admin-password');
+        const inputProductoId = document.getElementById('producto-id');
+        const inputProductoTitulo = document.getElementById('producto-titulo');
+        const inputProductoDescripcion = document.getElementById('producto-descripcion');
+        const inputProductoPrecio = document.getElementById('producto-precio');
+        const inputProductoImagen = document.getElementById('producto-imagen');
+
+        // ============================================
+        // VARIABLES GLOBALES (productos ya no necesita inicializarse con data dummy)
+        // ============================================
+
+        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+        let productos = []; // La data se cargará de Supabase
+        let totalCarrito = 0;
+
+        // ============================================
+        // FUNCIONES DE UTILIDAD - MOSTRAR/OCULTAR
+        // ============================================
+
+        function mostrar(elemento) { elemento.classList.remove('oculto'); }
+        function ocultar(elemento) { elemento.classList.add('oculto'); }
+
+        function mostrarCarrito() {
+            renderizarCarrito();
+            mostrar(modalCarrito);
+        }
+
+        function mostrarCheckout() {
+            ocultar(modalCarrito);
+            mostrar(modalCheckout);
+        }
+
+        function mostrarAdminLogin() {
+            mostrar(modalAdminLogin);
+        }
+
+        function mostrarPanelAdmin() {
+            ocultar(modalAdminLogin);
+            mostrar(panelAdmin);
+            renderizarGestionProductos();
+        }
+
+        // ============================================
+        // FUNCIONES DEL CARRITO (mejoradas con localStorage)
+        // ============================================
+
+        function guardarCarritoLocal() {
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+        }
+
+        function actualizarContadorCarrito() {
+            const cantidad = carrito.length;
+            btnVerCarrito.textContent = `🛒 Carrito (${cantidad})`;
+            guardarCarritoLocal();
+        }
+
+        function calcularTotal() {
+            totalCarrito = carrito.reduce((sum, item) => sum + item.precio, 0);
+            carritoTotal.textContent = `Total: $${totalCarrito.toFixed(2)}`;
+        }
+
+        function renderizarCarrito() {
+            listaCarrito.innerHTML = '';
+
+            if (carrito.length === 0) {
+                listaCarrito.innerHTML = '<p class="carrito-vacio">Tu carrito está vacío</p>';
+                carritoTotal.textContent = 'Total: $0.00';
+                return;
+            }
+
+            carrito.forEach((item, index) => {
+                const itemHTML = `
+                    <div class="carrito-item">
+                        <div class="carrito-item-info">
+                            <h4>${item.titulo}</h4>
+                            <p class="carrito-item-precio">$${item.precio.toFixed(2)}</p>
+                        </div>
+                        <button class="btn-eliminar" onclick="eliminarDelCarrito(${index})">Eliminar</button>
+                    </div>
+                `;
+                listaCarrito.innerHTML += itemHTML;
+            });
+
+            calcularTotal();
+        }
+
+        function agregarAlCarrito(producto) {
+            carrito.push(producto);
+            actualizarContadorCarrito();
+            // Opcional: mostrar una notificación breve en el carrito
+            alert(`"${producto.titulo}" agregado al carrito.`);
+        }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarContadorCarrito();
+            renderizarCarrito();
+        }
+
+        // ============================================
+        // 📡 FUNCIONES DE SUPABASE (CRUD)
+        // ============================================
+
+        /**
+         * Trae todos los productos de la tabla 'productos' de Supabase
+         */
+        async function cargarProductosDesdeSupabase() {
+            contenedorProductos.innerHTML = '<p>Cargando productos...</p>';
+            try {
+                const { data, error } = await supabase
+                    .from('productos')
+                    .select('*');
+
+                if (error) throw error;
+
+                productos = data; // Almacenar los productos globalmente
+                renderizarProductos();
+
+            } catch (error) {
+                console.error('Error al cargar productos:', error.message);
+                contenedorProductos.innerHTML = `<p style="color:red;">Error al conectar con la tienda: ${error.message}</p>`;
+            }
+        }
+
+        /**
+         * Renderiza los productos en la vista principal
+         */
+        function renderizarProductos() {
+            if (productos.length === 0) {
+                contenedorProductos.innerHTML = '<p>No hay productos disponibles.</p>';
+                return;
+            }
+
+            contenedorProductos.innerHTML = '';
+            productos.forEach(producto => {
+                const productoHTML = `
+                    <div class="producto-card">
+                        <img src="${producto.imagen_url || 'https://via.placeholder.com/300x220?text=Producto'}" alt="${producto.titulo}">
+                        <div class="producto-info">
+                            <h3>${producto.titulo}</h3>
+                            <p>${producto.descripcion_corta}</p> <p class="precio">$${producto.precio.toFixed(2)}</p>
+                            <button class="btn-comprar" onclick="agregarAlCarrito({id: '${producto.id}', titulo: '${producto.titulo}', precio: ${producto.precio}})">
+                                Comprar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                contenedorProductos.innerHTML += productoHTML;
+            });
+        }
+
+        // --- ADMIN CRUD ---
+
+        /**
+         * Valida la contraseña del administrador usando Hashing (Mejora de seguridad)
+         */
+        async function validarAdminPassword(password) {
+            // 1. Hashear la contraseña ingresada
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+            // 2. Convertir el buffer a string hexadecimal
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashedInput = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // 3. Comparar con el HASH objetivo (Esto debería consultar la tabla 'admin' en Supabase)
+            // Por simplicidad, comparamos con la variable local (Asegúrate de cambiar esto)
+
+            // En un entorno real, usarías Supabase:
+            // const { data, error } = await supabase.from('admin').select('password_hash').eq('id', 1).single();
+            // return hashedInput === data.password_hash;
+
+            // Por ahora, solo simulación local:
+            return hashedInput === ADMIN_PASSWORD_HASH_TARGET;
+        }
+
+        /**
+         * Renderiza la lista de productos en el panel de gestión
+         */
+        function renderizarGestionProductos() {
+            // Usa la variable 'productos' cargada desde Supabase
+            if (productos.length === 0) {
+                listaGestionProductos.innerHTML = '<p>No hay productos para gestionar.</p>';
+                return;
+            }
+
+            listaGestionProductos.innerHTML = '';
+            productos.forEach(producto => {
+                const html = `
+                    <div class="producto-admin">
+                        <div class="producto-admin-info">
+                            <h4>${producto.titulo}</h4>
+                            <p>ID: ${producto.id} | Precio: $${producto.precio.toFixed(2)}</p>
+                        </div>
+                        <div class="producto-admin-actions">
+                            <button class="btn-editar" onclick="cargarProductoParaEditar('${producto.id}')">Editar</button>
+                            <button class="btn-eliminar-admin" onclick="eliminarProducto('${producto.id}')">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+                listaGestionProductos.innerHTML += html;
+            });
+        }
+
+        /**
+         * Lógica para cargar producto en el formulario de edición
+         */
+        function cargarProductoParaEditar(id) {
+            const producto = productos.find(p => p.id === id);
+            if (producto) {
+                inputProductoId.value = producto.id;
+                inputProductoTitulo.value = producto.titulo;
+                inputProductoDescripcion.value = producto.descripcion_corta; // o el campo que uses
+                inputProductoPrecio.value = producto.precio;
+                // La imagen se gestiona aparte
+                document.getElementById('btn-guardar-producto').textContent = 'Actualizar Producto';
+                alert(`Editando: ${producto.titulo}. Sube una nueva imagen si quieres cambiarla.`);
+            }
+        }
+
+        /**
+         * Eliminar producto de Supabase
+         */
+        async function eliminarProducto(id) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este producto?')) return;
+
+            try {
+                // Aquí deberías también eliminar la imagen del Supabase Storage
+                // Lógica de Supabase:
+                const { error } = await supabase
+                    .from('productos')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                alert('Producto eliminado con éxito.');
+                await cargarProductosDesdeSupabase(); // Recargar la lista
+                mostrarPanelAdmin(); // Volver a mostrar la gestión
+
+            } catch (error) {
+                console.error('Error al eliminar producto:', error.message);
+                alert(`Error: No se pudo eliminar el producto. ${error.message}`);
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS (Modificados para usar las funciones de utilidad)
+        // ============================================
+
+        // Botones del header
+        btnVerCarrito.addEventListener('click', mostrarCarrito);
+        btnAdminLogin.addEventListener('click', mostrarAdminLogin);
+
+        // Botones de cerrar modales
+        btnCerrarCarrito.addEventListener('click', () => ocultar(modalCarrito));
+        btnCerrarCheckout.addEventListener('click', () => mostrar(modalCarrito) || ocultar(modalCheckout)); // Vuelve al carrito
+        btnCerrarAdminLogin.addEventListener('click', () => ocultar(modalAdminLogin));
+        btnCerrarPanelAdmin.addEventListener('click', () => ocultar(panelAdmin));
+
+        // Cerrar modales al hacer clic fuera (funciona correctamente)
+        modalCarrito.addEventListener('click', (e) => { if (e.target === modalCarrito) ocultar(modalCarrito); });
+        modalCheckout.addEventListener('click', (e) => { if (e.target === modalCheckout) ocultar(modalCheckout); });
+        modalAdminLogin.addEventListener('click', (e) => { if (e.target === modalAdminLogin) ocultar(modalAdminLogin); });
+        panelAdmin.addEventListener('click', (e) => { if (e.target === panelAdmin) ocultar(panelAdmin); });
+
+        // Botón proceder al pago
+        btnProcederPago.addEventListener('click', () => {
+            if (carrito.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+            mostrarCheckout();
+        });
+
+        // Formulario de checkout
+        formularioCheckout.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nombre = document.getElementById('checkout-nombre').value;
+            const direccion = document.getElementById('checkout-direccion').value;
+            const contacto = document.getElementById('checkout-contacto').value;
+
+            // 1. Preparar la data del pedido para Supabase
+            const pedido = {
+                nombre_cliente: nombre,
+                direccion: direccion,
+                contacto: contacto,
+                total: totalCarrito,
+                items: JSON.stringify(carrito), // Guardar el carrito como JSON en un campo de texto/JSONB
+                estado: 'Pendiente'
+            };
+
+            // 2. Insertar en Supabase (debes crear la tabla 'pedidos')
+            try {
+                const { error } = await supabase
+                    .from('pedidos')
+                    .insert([pedido]);
+
+                if (error) throw error;
+
+                // 3. Simulación de pago Codapay y limpieza
+                alert(`¡Pedido #XX procesado! Total: $${totalCarrito.toFixed(2)}. Contacto: ${contacto}. Por favor, realiza el pago a través de Codapay.`);
+
+                // Limpiar carrito y cerrar modal
+                carrito = [];
+                guardarCarritoLocal();
+                actualizarContadorCarrito();
+                ocultar(modalCheckout);
+
+            } catch (error) {
+                console.error('Error al procesar el pedido:', error.message);
+                alert('Error al guardar el pedido. Intenta de nuevo.');
+            }
+        });
+
+        // Formulario de login admin
+        formularioAdminLogin.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const password = inputAdminPassword.value;
+
+            // Usamos la validación con hashing
+            const esValido = await validarAdminPassword(password);
+
+            if (esValido) {
+                alert('Acceso concedido.');
+                mostrarPanelAdmin();
+            } else {
+                alert('Contraseña incorrecta.');
+            }
+
+            inputAdminPassword.value = '';
+        });
+
+        // Formulario de productos (CRUD Admin)
+        formularioProducto.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = inputProductoId.value;
+            const titulo = inputProductoTitulo.value;
+            const descripcion = inputProductoDescripcion.value;
+            const precio = parseFloat(inputProductoPrecio.value);
+            const imagenFile = inputProductoImagen.files[0];
+
+            const productoData = {
+                titulo: titulo,
+                descripcion_corta: descripcion,
+                precio: precio,
+            };
+
+            try {
+                // Lógica de Subida de Imagen
+                if (imagenFile) {
+                    const filePath = `${Date.now()}_${imagenFile.name}`;
+                    const { data: uploadData, error: uploadError } = await supabase.storage
+                        .from('imagenes_productos') // Asegúrate de crear este bucket en Supabase
+                        .upload(filePath, imagenFile, {
+                            cacheControl: '3600',
+                            upsert: false
+                        });
+
+                    if (uploadError) throw uploadError;
+
+                    // Obtener la URL pública de la imagen
+                    const { data: publicURLData } = supabase.storage
+                        .from('imagenes_productos')
+                        .getPublicUrl(filePath);
+
+                    productoData.imagen_url = publicURLData.publicUrl;
+                }
+
+                // Lógica de Inserción/Actualización en la tabla 'productos'
+                if (id) {
+                    // UPDATE
+                    const { error: updateError } = await supabase
+                        .from('productos')
+                        .update(productoData)
+                        .eq('id', id);
+                    if (updateError) throw updateError;
+                    alert('Producto actualizado con éxito.');
+                } else {
+                    // INSERT
+                    const { error: insertError } = await supabase
+                        .from('productos')
+                        .insert([productoData]);
+                    if (insertError) throw insertError;
+                    alert('Producto creado con éxito.');
+                }
+
+                // Limpiar y recargar
+                formularioProducto.reset();
+                inputProductoId.value = '';
+                document.getElementById('btn-guardar-producto').textContent = 'Guardar Producto';
+                await cargarProductosDesdeSupabase();
+                renderizarGestionProductos();
+
+            } catch (error) {
+                console.error('Error al guardar/actualizar producto:', error.message);
+                alert(`Error: No se pudo guardar el producto. ${error.message}`);
+            }
+        });
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+
+        function inicializar() {
+            cargarProductosDesdeSupabase(); // Cargar productos al inicio
+            actualizarContadorCarrito(); // Cargar el carrito de localStorage
+        }
+
+        // Ejecutar al cargar la página
+        document.addEventListener('DOMContentLoaded', inicializar);
+    </script>
+</body>
+
+</html>
