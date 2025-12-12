@@ -1,0 +1,638 @@
+/* ========================================
+   VARIABLES CSS - SISTEMA DE COLORES
+   ======================================== */
+:root {
+    /* Colores principales */
+    --color-beige: #F5E6D3;
+    --color-azul: #2E5C8A;
+    --color-rojo: #C94545;
+    --color-amarillo: #F4B942;
+    --color-blanco: #FFFFFF;
+
+    /* Colores de fondo */
+    --bg-primary: var(--color-beige);
+    --bg-secondary: var(--color-blanco);
+    --bg-card: #FAF3E8;
+
+    /* Colores de texto */
+    --text-primary: #2C2C2C;
+    --text-secondary: #5A5A5A;
+
+    /* Color de acento */
+    --accent-color: var(--color-azul);
+    --accent-hover: #234A6E;
+
+    /* Bordes y sombras */
+    --border-color: #D4C4B0;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+    /* Otros */
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1F2937;
+    --bg-secondary: #374151;
+    --bg-card: #2D3748;
+    --text-primary: #F9FAFB;
+    --text-secondary: #D1D5DB;
+    --border-color: #4B5563;
+    --accent-color: #3B82F6;
+    --accent-hover: #2563EB;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   RESET Y CONFIGURACIÓN BASE
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========================================
+   PRELOADER
+   ======================================== */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.spinner {
+    border: 6px solid var(--border-color);
+    border-top: 6px solid var(--accent-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+.preloader p {
+    margin-top: 1rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+    padding: 1rem 0;
+    z-index: 1000;
+    box-shadow: var(--shadow);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-header {
+    height: 45px;
+    width: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo-header:hover {
+    transform: scale(1.05);
+}
+
+/* ========================================
+   TOGGLE DE TEMA
+   ======================================== */
+.theme-toggle {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-card);
+}
+
+.theme-icon {
+    font-size: 1.3rem;
+}
+
+/* ========================================
+   CONTENEDOR PRINCIPAL
+   ======================================== */
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 1.5rem 3rem;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ========================================
+   TIPOGRAFÍA
+   ======================================== */
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--color-azul);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.highlight-text {
+    color: var(--color-rojo);
+}
+
+h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+.botonp,
+.botonplantillas,
+.view-button,
+.back-button {
+    background: var(--accent-color);
+    color: var(--color-blanco);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow);
+    margin: 0.5rem;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.botonp:hover,
+.botonplantillas:hover,
+.view-button:hover,
+.back-button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.botonp:active,
+.botonplantillas:active,
+.view-button:active,
+.back-button:active {
+    transform: translateY(0);
+}
+
+.botonp:disabled,
+.botonplantillas:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ========================================
+   CARDS Y GRIDS
+   ======================================== */
+.plantillas-grid,
+.works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.plantilla-card,
+.work-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 250px;
+}
+
+.plantilla-card:hover,
+.work-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.work-card .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--color-amarillo);
+}
+
+.work-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.work-card p {
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+}
+
+/* ========================================
+   SECCIONES ESPECIALES
+   ======================================== */
+.featured-works-section {
+    background: var(--bg-card);
+    padding: 4rem 2rem;
+    margin-top: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--border-color);
+    max-width: 1200px;
+    width: 100%;
+}
+
+.featured-works-section h2 {
+    position: relative;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.featured-works-section h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--color-rojo);
+    border-radius: 2px;
+}
+
+/* ========================================
+   PERFIL DEL DOCENTE
+   ======================================== */
+.profile-section {
+    background: var(--bg-card);
+    padding: 3rem 2rem;
+    margin-top: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    border: 2px solid var(--border-color);
+    max-width: 1000px;
+    width: 100%;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.profile-images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-color);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+}
+
+.institution-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--border-radius);
+    border: 3px solid var(--border-color);
+    background: var(--bg-secondary);
+    padding: 10px;
+}
+
+.profile-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.info-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    text-align: left;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.info-card h3 {
+    color: var(--accent-color);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-card .icon {
+    font-size: 1.5rem;
+    color: var(--color-amarillo);
+}
+
+.info-card ul {
+    padding-left: 1.5rem;
+}
+
+.info-card li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   LOGROS Y RECONOCIMIENTOS
+   ======================================== */
+.achievements-section {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.achievement-item {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.achievement-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-rojo);
+}
+
+.achievement-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-rojo);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.achievement-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   ANIMACIÓN DE FONDO
+   ======================================== */
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.1;
+}
+
+.particle {
+    position: absolute;
+    background: var(--accent-color);
+    border-radius: 50%;
+    animation: float 10s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(180deg);
+        opacity: 0.8;
+    }
+}
+
+/* ========================================
+   ANIMACIONES DE ENTRADA
+   ======================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 1rem;
+    }
+
+    .contenedor {
+        padding: 100px 1rem 2rem;
+    }
+
+    .logo-header {
+        height: 40px;
+    }
+
+    .plantillas-grid,
+    .works-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .profile-images {
+        flex-direction: column;
+    }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .institution-logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-content {
+        grid-template-columns: 1fr;
+    }
+
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor {
+        padding: 90px 0.5rem 1rem;
+    }
+
+    .botonp,
+    .botonplantillas {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .theme-toggle {
+        padding: 0.5rem 0.8rem;
+    }
+}
+
+/* ========================================
+   ACCESIBILIDAD
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+.botonp:focus,
+.botonplantillas:focus,
+.theme-toggle:focus,
+.view-button:focus,
+.back-button:focus {
+    outline: 3px solid var(--color-amarillo);
+    outline-offset: 2px;
+}

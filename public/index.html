@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Plantillas de investigación profesionales - Descarga plantillas gratuitas para tus proyectos de investigación">
+    <meta name="keywords" content="plantillas, investigación, académicas, descargar, PDF, trabajos, proyectos">
+    <title>Metodología de Investigación - Inicio</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <style>
+        /* Estilos básicos para el botón flotante y el modal */
+        .admin-login-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color, #000000);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        .admin-login-button:hover {
+            background-color: var(--primary-darker, #0056b3);
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Fije el fondo semitransparente */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--background-card, #fefefe);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            /* Fije la sombra */
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-button {
+            color: var(--text-secondary, #aaa);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-content input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            display: inline-block;
+            border: 1px solid var(--border-color, #ccc);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            background-color: var(--primary-color, #007bff);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .modal-content button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .auth-message {
+            margin-top: 15px;
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preloader" id="preloader">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
+    <header class="header">
+        <div class="header-content">
+            <img src="images/logo.png" alt="Logo Plantillas de Investigación" class="logo-header">
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="background-animation" id="backgroundAnimation"></div>
+
+    <main class="contenedor">
+        <h1 class="fade-in">Bienvenido a la página de</h1>
+        <h1 class="fade-in highlight-text">Metodología de la Investigación</h1>
+
+        <p class="fade-in" style="font-size: 1.2rem; color: var(--text-secondary); margin: 2rem 0; max-width: 600px;">
+            Descubre nuestra colección de plantillas profesionales diseñadas para facilitar tus proyectos de
+            investigación
+            académica en nuestra institución.
+        </p>
+
+        <button class="botonp fade-in" onclick="window.location.href='plantillas.html'">
+            Ver Plantillas Disponibles
+        </button>
+        <button class="botonp fade-in" onclick="window.location.href='docente.html'">
+            Ver perfil del docente
+        </button>
+
+        <section class="featured-works-section fade-in">
+            <h2>🏆 Documentos y Trabajos Disponibles</h2>
+            <p
+                style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                Explora los documentos y proyectos más recientes subidos por el docente.
+            </p>
+            <div class="works-grid" id="pdfListContainer">
+            </div>
+        </section>
+    </main>
+
+    <button class="admin-login-button" id="openAdminModal" title="Acceso Docente">🔑</button>
+
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalBtn">&times;</span>
+            <h2>Acceso Docente</h2>
+            <p>Introduce la contraseña de administrador para subir archivos.</p>
+            <form id="adminLoginForm">
+                <label for="adminPassword">Contraseña:</label>
+                <input type="password" id="adminPassword" required>
+                <button type="submit" id="loginSubmitBtn">Iniciar Sesión</button>
+                <p id="authMessage" class="auth-message" style="display: none;"></p>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
