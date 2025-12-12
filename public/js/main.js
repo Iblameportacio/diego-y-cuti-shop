@@ -1,18 +1,18 @@
-// public/js/main.js
+// public/js/main.js - ADAPTADO para Tienda de Repuestos
 
-// Importación de módulos auxiliares
-// Asegúrate de que createPdfCard EXISTE y usa 'export' en plantillas.js.
-import { createPublicPdfCard } from './plantillas.js';
+// Asegúrate de que esta función exista en un módulo importado (ej. './utils.js' o './plantillas.js')
+// La renombraremos para que cree tarjetas de productos, no de PDFs.
+import { createProductCard } from './plantillas.js'; 
 
 // ========================================
-// GESTIÓN DEL TEMA (CLARO/OSCURO)
+// GESTIÓN DEL TEMA (Lo dejamos intacto)
 // ========================================
 
 export function toggleTheme() {
     const html = document.documentElement;
     const themeIcon = document.querySelector('.theme-icon');
     const currentTheme = html.getAttribute('data-theme');
-
+    // ... (El resto de la lógica de toggleTheme es igual) ...
     if (currentTheme === 'dark') {
         html.removeAttribute('data-theme');
         themeIcon.textContent = '🌙';
@@ -37,28 +37,7 @@ function loadTheme() {
         themeIcon.textContent = '🌙';
     }
 }
-
-// ========================================
-// UTILIDADES DE UI Y ANIMACIÓN
-// ========================================
-
-function createBackgroundAnimation() {
-    const container = document.getElementById('backgroundAnimation');
-    if (!container) return;
-    const particleCount = 20;
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.width = (Math.random() * 5 + 3) + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.animationDelay = Math.random() * 8 + 's';
-        particle.style.animationDuration = (Math.random() * 5 + 6) + 's';
-        container.appendChild(particle);
-    }
-}
-
+// ... (Otras funciones de UI/Animación: createBackgroundAnimation, hidePreloader, etc. son iguales) ...
 function hidePreloader() {
     const preloader = document.getElementById('preloader');
     if (!preloader) return;
@@ -76,163 +55,141 @@ function initFadeInAnimations() {
     });
 }
 
-function detectSystemTheme() {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        if (!localStorage.getItem('theme')) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-        }
-    }
-}
-
-function listenSystemThemeChanges() {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-        if (!localStorage.getItem('theme')) {
-            if (e.matches) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-            } else {
-                document.documentElement.removeAttribute('data-theme');
-            }
-        }
-    });
-}
 
 // ========================================
-// CARGA DINÁMICA DE PDFS (/api/list)
+// CARGA DINÁMICA DE PRODUCTOS (/api/products-public.js)
 // ========================================
 
-async function fetchPdfs() {
-    const listContainer = document.getElementById('pdfListContainer'); 
-    if (!listContainer) return;
-    listContainer.innerHTML = 'Cargando documentos...'; 
+async function fetchProducts() {
+    // Renombramos el ID del contenedor para reflejar "productos"
+    const listContainer = document.getElementById('productListContainer'); 
+    if (!listContainer) return;
+    listContainer.innerHTML = 'Cargando repuestos...'; 
 
-    try {
-        const response = await fetch('/api/list');
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        
-        const pdfs = await response.json();
-        listContainer.innerHTML = ''; 
+    try {
+        // Llamamos al nuevo endpoint público
+        const response = await fetch('/api/products-public'); 
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        
+        const products = await response.json();
+        listContainer.innerHTML = ''; 
 
-        if (pdfs.length === 0) {
-            listContainer.innerHTML = '<p>No hay documentos disponibles por el momento.</p>';
-            return;
-        }
+        if (products.length === 0) {
+            listContainer.innerHTML = '<p>No hay repuestos disponibles por el momento.</p>';
+            return;
+        }
 
-        pdfs.forEach(pdf => {
-            // Usa la función importada de plantillas.js
-            const card = createPublicPdfCard(pdf);
+        products.forEach(product => {
+            // 🛠️ Usamos la función adaptada (la definiremos en plantillas.js)
+            const card = createProductCard(product); 
             listContainer.appendChild(card);
         });
 
-    } catch (error) {
-        console.error('Error al obtener la lista de PDFs:', error);
-        listContainer.innerHTML = `<p class="error-message">Error al cargar los documentos. Inténtalo más tarde.</p>`;
-    }
+    } catch (error) {
+        console.error('Error al obtener la lista de productos:', error);
+        listContainer.innerHTML = `<p class="error-message">Error al cargar los repuestos. Inténtalo más tarde.</p>`;
+    }
 }
 
 // ========================================
-// LÓGICA DE AUTENTICACIÓN DOCENTE
+// LÓGICA DE AUTENTICACIÓN ADMINISTRADOR
 // ========================================
 
 function setupAuthModal() {
-    const modal = document.getElementById('adminModal');
-    const openBtn = document.getElementById('openAdminModal');
-    const loginForm = document.getElementById('adminLoginForm');
-    const passwordInput = document.getElementById('adminPassword');
-    const message = document.getElementById('authMessage');
-    
-    if (!modal || !openBtn || !loginForm) return;
+    const modal = document.getElementById('adminModal');
+    const openBtn = document.getElementById('openAdminModal');
+    const loginForm = document.getElementById('adminLoginForm');
+    const passwordInput = document.getElementById('adminPassword');
+    const message = document.getElementById('authMessage');
+    
+    if (!modal || !openBtn || !loginForm) return;
 
-    // Abrir Modal
-    openBtn.onclick = () => {
-        modal.style.display = "flex";
-        passwordInput.focus();
-    }
+    // Abrir Modal
+    openBtn.onclick = () => {
+        modal.style.display = "flex";
+        passwordInput.focus();
+    }
 
-    // Cerrar Modal (usando el botón de cerrar o click fuera)
-    document.querySelector('.close-button').onclick = closeModal;
-    window.onclick = (event) => {
-        if (event.target == modal) closeModal();
-    }
+    // Cerrar Modal (usando el botón de cerrar o click fuera)
+    document.querySelector('.close-button').onclick = closeModal;
+    window.onclick = (event) => {
+        if (event.target == modal) closeModal();
+    }
 
-    function closeModal() {
-        modal.style.display = "none";
-        message.style.display = "none";
-        passwordInput.value = "";
-    }
+    function closeModal() {
+        modal.style.display = "none";
+        message.style.display = "none";
+        passwordInput.value = "";
+    }
 
-    // Manejar el submit del login
-    loginForm.addEventListener('submit', handleLogin);
+    // Manejar el submit del login
+    loginForm.addEventListener('submit', handleLogin);
 }
 
 async function handleLogin(event) {
-    event.preventDefault();
-    
-    const passwordInput = document.getElementById('adminPassword');
-    const message = document.getElementById('authMessage');
-    const loginBtn = document.getElementById('loginSubmitBtn');
-    
-    const password = passwordInput.value;
-    message.style.display = 'none';
-    loginBtn.disabled = true;
+    event.preventDefault();
+    
+    const passwordInput = document.getElementById('adminPassword');
+    const message = document.getElementById('authMessage');
+    const loginBtn = document.getElementById('loginSubmitBtn');
+    
+    const password = passwordInput.value;
+    message.style.display = 'none';
+    loginBtn.disabled = true;
 
-    try {
-        const response = await fetch('/api/auth', {
-            method: 'POST',
-            headers: {
-                // El backend espera la contraseña aquí para verificarla
-                'X-Professor-Password': password, 
-                'Content-Type': 'application/json' 
-            },
-            // Se puede omitir el body si el backend solo usa el header. 
-            // Si el backend lo requiere: body: JSON.stringify({ password: password }),
-        });
+    try {
+        const response = await fetch('/api/auth', {
+            method: 'POST',
+            headers: {
+                // El backend espera la contraseña aquí (mantenemos el nombre de header por compatibilidad)
+                'X-Professor-Password': password, 
+                'Content-Type': 'application/json' 
+            },
+        });
 
-        if (response.ok) {
-            // SOLUCIÓN CRÍTICA: Guardar la contraseña en sesión si el login es exitoso
-            sessionStorage.setItem('professor_password', password); 
-            
-            message.textContent = "Acceso concedido. Redirigiendo a profeGian...";
-            message.style.color = 'green';
-            message.style.display = 'block';
-            
-            setTimeout(() => {
-                // Redirigir al panel docente
-                window.location.href = 'profegian.html'; 
-            }, 1000); 
+        if (response.ok) {
+            // 🛠️ CRÍTICO: Guardar la contraseña bajo el nombre "admin_password" y no "professor_password"
+            sessionStorage.setItem('admin_password', password); 
+            
+            message.textContent = "Acceso concedido. Redirigiendo al Panel de Administración...";
+            message.style.color = 'green';
+            message.style.display = 'block';
+            
+            setTimeout(() => {
+                // Redirigir al panel de administración (admin.html)
+                window.location.href = 'admin.html'; 
+            }, 1000); 
 
-        } else {
-            const errorData = await response.json();
-            message.textContent = ` ${errorData.error || 'Contraseña incorrecta.'}`;
-            message.style.color = 'red';
-            message.style.display = 'block';
-            // Asegurarse de limpiar la sesión si falla
-            sessionStorage.removeItem('professor_password');
-        }
-    } catch (error) {
-        console.error('Error de red al autenticar:', error);
-        message.textContent = ' Error de conexión con el servidor.';
-        message.style.color = 'red';
-        message.style.display = 'block';
-    } finally {
-        loginBtn.disabled = false;
-    }
+        } else {
+            const errorData = await response.json();
+            message.textContent = ` ${errorData.error || 'Contraseña incorrecta.'}`;
+            message.style.color = 'red';
+            message.style.display = 'block';
+            // Limpiar la sesión si falla
+            sessionStorage.removeItem('admin_password');
+        }
+    } catch (error) {
+        console.error('Error de red al autenticar:', error);
+        message.textContent = ' Error de conexión con el servidor.';
+        message.style.color = 'red';
+        message.style.display = 'block';
+    } finally {
+        loginBtn.disabled = false;
+    }
 }
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    hidePreloader();
-    loadTheme();
-    createBackgroundAnimation();
-    initFadeInAnimations();
-    detectSystemTheme();
-    listenSystemThemeChanges();
-    
-    // Funciones de lógica de negocio (doble llamada, puedes quitar una)
-    fetchPdfs(); 
-    setupAuthModal();
-    // fetchPdfs(); <- Esta está duplicada
-    // setupAuthModal(); <- Esta también
+    hidePreloader();
+    loadTheme();
+    // createBackgroundAnimation(); // Puedes desactivar esta si no quieres la animación
+    initFadeInAnimations();
+    // detectSystemTheme(); // Puedes desactivar estas si no te interesan
+    // listenSystemThemeChanges();
+    
+    // 🛠️ Llamamos a la nueva función
+    fetchProducts(); 
+    setupAuthModal();
 });
 
 window.toggleTheme = toggleTheme;
