@@ -7,6 +7,628 @@
     <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+    <style>/* ========================================
+   VARIABLES CSS - SISTEMA DE COLORES (AZUL REY)
+   ======================================== */
+:root {
+    /* Colores principales */
+    --color-azul-rey: #0044BB; /* Azul Rey / Dominante */
+    --color-azul-claro: #3B82F6; /* Azul más claro para acentos */
+    --color-rojo-acento: #C94545; /* Rojo para alertas/eliminar */
+    --color-amarillo-acento: #F4B942; /* Amarillo para iconos/focus */
+    --color-blanco: #FFFFFF;
+    --color-gris-claro: #F8F9FA;
+
+    /* Colores de fondo */
+    --bg-primary: var(--color-gris-claro); /* Fondo claro dominante */
+    --bg-secondary: var(--color-blanco); /* Fondo de tarjetas/secundario */
+    --bg-card: var(--color-blanco);
+
+    /* Colores de texto */
+    --text-primary: #1A1A1A;
+    --text-secondary: #5A5A5A;
+
+    /* Color de acento */
+    --accent-color: var(--color-azul-rey);
+    --accent-hover: #003399;
+
+    /* Bordes y sombras */
+    --border-color: #E0E0E0;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    /* Otros */
+    --border-radius: 10px;
+    --transition: all 0.3s ease;
+}
+
+[data-theme="dark"] {
+    /* Paleta Oscura */
+    --bg-primary: #121212;
+    --bg-secondary: #1F1F1F;
+    --bg-card: #282828;
+    --text-primary: #F9FAFB;
+    --text-secondary: #B0B0B0;
+    --border-color: #333333;
+    --accent-color: var(--color-azul-claro); /* Mantenemos un azul brillante */
+    --accent-hover: #1E6BEB;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* ========================================
+   RESET Y CONFIGURACIÓN BASE
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========================================
+   PRELOADER (Mantenido)
+   ======================================== */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+.spinner {
+    border: 6px solid var(--border-color);
+    border-top: 6px solid var(--accent-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+.preloader p {
+    margin-top: 1rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========================================
+   HEADER (Adaptado a tu HTML: <header>)
+   ======================================== */
+header {
+    background: var(--bg-secondary);
+    border-bottom: 3px solid var(--accent-color); /* Toque azul rey */
+    padding: 1.5rem 0; /* Más espacio */
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: var(--accent-color);
+    font-weight: 800;
+    margin: 0;
+}
+
+header p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-style: italic;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ========================================
+   TOGGLE DE TEMA (Pulido)
+   ======================================== */
+.theme-toggle {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 50%; /* Circular */
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-secondary);
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent-color);
+    background: var(--bg-card);
+}
+
+.theme-icon {
+    font-size: 1.3rem;
+}
+
+/* ========================================
+   CONTENEDOR PRINCIPAL (Renombrado a .container)
+   ======================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 1.5rem 3rem; /* Espacio debajo del header */
+    text-align: center;
+    min-height: calc(100vh - 100px); /* Ajuste de altura */
+}
+
+/* ========================================
+   TIPOGRAFÍA (Adaptada)
+   ======================================== */
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--accent-color); /* Azul Rey */
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.highlight-text {
+    color: var(--color-rojo-acento);
+}
+
+h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* ========================================
+   BOTONES (Unificado)
+   ======================================== */
+.cta-button, .secondary-button {
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Botón Principal (Azul Rey) */
+.primary-button {
+    background: var(--accent-color);
+    color: var(--color-blanco);
+}
+.primary-button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Botón Secundario (Gris o Invertido) */
+.secondary-button {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+.secondary-button:hover {
+    background: var(--border-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+
+/* Deshabilitados */
+.cta-button:disabled,
+.secondary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ========================================
+   SECCIÓN DE PRODUCTOS (Grid)
+   ======================================== */
+.products-section {
+    padding: 2rem 0;
+}
+
+.products-section h2 {
+    margin-bottom: 0.5rem;
+}
+
+.grid-container {
+    display: grid;
+    /* Adapta a 280px por columna */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 30px; 
+    padding: 30px 0;
+}
+
+/* ========================================
+   TARJETA INDIVIDUAL DE PRODUCTO (Pulido)
+   ======================================== */
+
+.product-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden; 
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+    text-align: left;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.product-image-container {
+    width: 100%;
+    /* Aspecto fijo 4:3 */
+    padding-top: 75%; 
+    position: relative;
+    overflow: hidden;
+    background: var(--border-color);
+}
+
+.product-image-fit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image-fit {
+    transform: scale(1.05);
+}
+
+.product-info-body {
+    padding: 15px 15px 10px;
+    flex-grow: 1; 
+}
+
+.product-title {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.product-description {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    /* Limitar a 3 líneas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-footer {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+}
+
+.product-price-label {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-rojo-acento); /* Precio en color destacado */
+}
+
+/* ========================================
+   MODAL DE AUTENTICACIÓN
+   ======================================== */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    margin: 15% auto; 
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+}
+
+.close-button {
+    color: var(--text-secondary);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--accent-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#adminLoginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#adminLoginForm label {
+    align-self: flex-start;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#adminPassword {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.message-area {
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   ADMIN PANEL (Estilos específicos)
+   ======================================== */
+.admin-body {
+    background: var(--bg-primary);
+}
+
+.admin-header {
+    background: var(--accent-color);
+    color: var(--color-blanco);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+.admin-header h1 {
+    color: var(--color-blanco);
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.admin-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 1.5rem;
+}
+
+.admin-section {
+    background: var(--bg-secondary);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.admin-section h2 {
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#uploadProductForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+#uploadSubmitBtn {
+    grid-column: 1 / -1;
+    margin-top: 15px;
+}
+
+.admin-product-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    gap: 15px;
+    transition: background 0.2s ease;
+}
+
+.admin-product-item:hover {
+    background: var(--bg-primary);
+}
+
+.admin-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.product-details {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.product-details p {
+    margin: 0;
+    line-height: 1.3;
+}
+
+.delete-btn {
+    background: var(--color-rojo-acento);
+    color: var(--color-blanco);
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+.delete-btn:hover {
+    background: #A03333;
+}
+
+/* ========================================
+   ANIMACIONES Y RESPONSIVE (Mantenido y adaptado)
+   ======================================== */
+/* ... (El resto de tus estilos de animación y responsive, incluyendo @keyframes,
+     @media (max-width: 768px), etc., deben ir aquí sin cambios mayores,
+     asegurándote de que los selectores .contenedor sean .container) ... */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    #uploadProductForm {
+        grid-template-columns: 1fr;
+    }
+    .admin-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.cta-button:focus,
+.secondary-button:focus,
+.theme-toggle:focus {
+    outline: 3px solid var(--color-amarillo-acento);
+    outline-offset: 2px;
+}
+    </style>
 <body onload="document.body.style.opacity='1'">
 
     <div id="preloader">...</div>
@@ -59,3 +681,4 @@
     <script src="js/main.js" type="module"></script> 
     </body>
 </html>
+
