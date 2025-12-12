@@ -1,6 +1,6 @@
 // api/delete.js - ADAPTADO para PRODUCTOS e IMÁGENES
 import { createClient } from '@supabase/supabase-js';
-// ⚠️ IMPORTANTE: La función en auth.js ahora es asíncrona y se llama validateAdminPassword
+// La función en auth.js ahora es asíncrona y se llama validateAdminPassword
 import { validateAdminPassword } from './auth.js'; 
 
 // USAMOS LA CLAVE DE ROL DE SERVICIO para eliminar
@@ -61,3 +61,4 @@ export default async (req, res) => {
         res.status(500).json({ error: err.message || 'Error interno del servidor durante la eliminación.' });
     }
 };
+
